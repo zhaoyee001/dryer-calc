@@ -1,0 +1,6 @@
+platforms/
+plugins/
+node_modules/
+*.apk
+*.aab
+.DS_Store
