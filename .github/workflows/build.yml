@@ -46,7 +46,7 @@ jobs:
             echo ">>> Using keystore from secret"
             echo "$KS_BASE64" | base64 -d > release.keystore
           else
-            echo ">>> Generating new keystore (store as GitHub secret after this run)"
+            echo ">>> Generating new keystore (save as GitHub secret after first run)"
             keytool -genkey -v \
               -keystore release.keystore \
               -alias dryer-calc \
@@ -55,17 +55,24 @@ jobs:
               -keypass "$KEY_PW" \
               -dname "CN=DryerCalc, OU=Eng, O=Fantai, L=Hangzhou, ST=Zhejiang, C=CN"
           fi
-
-          # Save passwords for next steps
           echo "STORE_PASS=$STORE_PASS" >> $GITHUB_ENV
           echo "KEY_PW=$KEY_PW" >> $GITHUB_ENV
 
-      - name: Build APK (release)
-        run: cordova build android --release
+      - name: Build APK (via Gradle)
+        working-directory: platforms/android
+        run: ./gradlew assembleRelease
 
       - name: Sign APK
         run: |
           UNSIGNED="platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk"
+          if [ ! -f "$UNSIGNED" ]; then
+            echo "=== APK not found at expected path. Searching... ==="
+            find platforms/android -name "*.apk" -type f
+            find platforms/android -name "*.aab" -type f
+            exit 1
+          fi
+          echo "Found APK: $UNSIGNED ($(du -h "$UNSIGNED" | cut -f1))"
+
           SIGNED="platforms/android/app/build/outputs/apk/release/app-release.apk"
           $ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner sign \
             --ks release.keystore \
@@ -73,8 +80,10 @@ jobs:
             --key-pass pass:"${KEY_PW}" \
             --out "$SIGNED" \
             "$UNSIGNED"
+
+          echo "=== Verifying ==="
           $ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner verify --verbose "$SIGNED"
-          echo "APK size: $(du -h "$SIGNED" | cut -f1)"
+          echo "Signed APK: $(du -h "$SIGNED" | cut -f1)"
 
       - name: Upload signed APK
         uses: actions/upload-artifact@v4
