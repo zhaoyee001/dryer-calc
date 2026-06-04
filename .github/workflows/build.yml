@@ -59,8 +59,10 @@ jobs:
           echo "KEY_PW=$KEY_PW" >> $GITHUB_ENV
 
       - name: Build APK (via Gradle)
-        working-directory: platforms/android
-        run: ./gradlew assembleRelease
+        run: |
+          cd platforms/android
+          chmod +x gradlew
+          ./gradlew assembleRelease
 
       - name: Sign APK
         run: |
