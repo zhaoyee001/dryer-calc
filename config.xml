@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.fanti.dryercalc" version="3.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>骞茬嚗鏈鸿繃婊ゅ櫒閫夊瀷</name>
+    <description>
+        鍘嬬缉绌烘皵骞茬嚗鏈?&amp; 杩囨护鍣ㄩ€夊瀷璁＄畻 鈥?鍐峰共鏈?鍚稿共鏈?杩囨护鍣ㄥ伐绋嬮€夊瀷宸ュ叿
+    </description>
+    <author email="fanti@example.com" href="https://example.com">
+        鏉窞閽掗挍
+    </author>
+    <content src="index.html" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <preference name="Orientation" value="portrait" />
+    <preference name="Fullscreen" value="false" />
+    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="www/img/logo.png" />
+    <platform name="android">
+        <icon density="mdpi" src="www/img/logo.png" />
+        <icon density="hdpi" src="www/img/logo.png" />
+        <icon density="xhdpi" src="www/img/logo.png" />
+        <icon density="xxhdpi" src="www/img/logo.png" />
+        <icon density="xxxhdpi" src="www/img/logo.png" />
+    </platform>
+</widget>
