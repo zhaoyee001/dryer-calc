@@ -41,12 +41,11 @@ jobs:
         run: |
           STORE_PASS="${KS_PASS:-dryer2026_release}"
           KEY_PW="${KEY_PASS:-dryer2026_release}"
-
           if [ -n "$KS_BASE64" ]; then
             echo ">>> Using keystore from secret"
             echo "$KS_BASE64" | base64 -d > release.keystore
           else
-            echo ">>> Generating new keystore (save as GitHub secret after first run)"
+            echo ">>> Generating new keystore"
             keytool -genkey -v \
               -keystore release.keystore \
               -alias dryer-calc \
@@ -58,24 +57,26 @@ jobs:
           echo "STORE_PASS=$STORE_PASS" >> $GITHUB_ENV
           echo "KEY_PW=$KEY_PW" >> $GITHUB_ENV
 
-      - name: Build APK (via Gradle)
-        run: |
-          cd platforms/android
-          chmod +x gradlew
-          ./gradlew assembleRelease
+      - name: Build release APK
+        run: cordova build android --release
 
-      - name: Sign APK
+      - name: Find and sign APK
         run: |
-          UNSIGNED="platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk"
-          if [ ! -f "$UNSIGNED" ]; then
-            echo "=== APK not found at expected path. Searching... ==="
-            find platforms/android -name "*.apk" -type f
-            find platforms/android -name "*.aab" -type f
+          echo "=== All build outputs ==="
+          find platforms/android -type f \( -name "*.apk" -o -name "*.aab" \) 2>/dev/null
+
+          UNSIGNED=$(find platforms/android -path "*/release/*-release-unsigned.apk" -type f 2>/dev/null | head -1)
+          if [ -z "$UNSIGNED" ]; then
+            UNSIGNED=$(find platforms/android -path "*/release/*-unsigned.apk" -type f 2>/dev/null | head -1)
+          fi
+
+          if [ -z "$UNSIGNED" ]; then
+            echo "ERROR: No unsigned APK found"
             exit 1
           fi
-          echo "Found APK: $UNSIGNED ($(du -h "$UNSIGNED" | cut -f1))"
 
-          SIGNED="platforms/android/app/build/outputs/apk/release/app-release.apk"
+          echo "Signing: $UNSIGNED ($(du -h "$UNSIGNED" | cut -f1))"
+          SIGNED="${UNSIGNED%-unsigned.apk}.apk"
           $ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner sign \
             --ks release.keystore \
             --ks-pass pass:"${STORE_PASS}" \
@@ -83,15 +84,16 @@ jobs:
             --out "$SIGNED" \
             "$UNSIGNED"
 
-          echo "=== Verifying ==="
+          echo "=== Verify ==="
           $ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner verify --verbose "$SIGNED"
-          echo "Signed APK: $(du -h "$SIGNED" | cut -f1)"
+          ls -lh "$SIGNED"
+          echo "APK_PATH=$SIGNED" >> $GITHUB_ENV
 
       - name: Upload signed APK
         uses: actions/upload-artifact@v4
         with:
           name: dryer-calc-release-apk
-          path: platforms/android/app/build/outputs/apk/release/app-release.apk
+          path: ${{ env.APK_PATH }}
 
       - name: Upload keystore backup
         uses: actions/upload-artifact@v4
