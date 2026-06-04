@@ -4,134 +4,92 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>干燥机过滤器选型计算</title>
-<meta name="description" content="冷干机 / 吸干机 / 过滤器 — 工程选型工具 v3.0">
+<meta name="description" content="冷干机 / 吸干机 / 过滤器 — 工程选型工具 v3.1">
 <meta name="theme-color" content="#0e7490">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="干燥机选型">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%230e7490' width='100' height='100' rx='20'/><text x='50' y='65' text-anchor='middle' fill='white' font-size='50' font-family='sans-serif'>&#9881;</text></svg>">
-<link rel="manifest" href="data:application/json,{%22name%22:%22%E4%B9%BE%E7%87%A5%E6%9C%BA%E8%BF%87%E6%BB%A4%E5%99%A8%E9%80%89%E5%9E%8B%E8%AE%A1%E7%AE%97%22,%22short_name%22:%22%E4%B9%BE%E7%87%A5%E6%9C%BA%E9%80%89%E5%9E%8B%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%230e7490%22,%22theme_color%22:%22%230e7490%22,%22icons%22:[{%22src%22:%22data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%230e7490' width='100' height='100' rx='20'/><text x='50' y='65' text-anchor='middle' fill='white' font-size='50' font-family='sans-serif'>&#9881;</text></svg>%22,%22sizes%22:%22any%22,%22type%22:%22image/svg+xml%22,%22purpose%22:%22any%22}]}">
 <style>
-:root {
-  --bg: #f0f4f8;
-  --card: #ffffff;
-  --accent: #0891b2;
-  --accent2: #0e7490;
-  --green: #059669;
-  --orange: #d97706;
-  --red: #dc2626;
-  --text: #1e293b;
-  --text2: #64748b;
-  --border: #e2e8f0;
-  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
-}
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", sans-serif; background: #e8ecf2; color: var(--text); min-height: 100vh; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", sans-serif; background: #e8ecf2; color: #1e293b; min-height: 100vh; }
 .app { max-width: 480px; margin: 0 auto; padding: 12px 10px 24px; }
-
-/* Header */
-.header { background: var(--accent2); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
-.header h1 { color: #fff; font-size: 15px; font-weight: 700; }
+.header { background: #0e7490; border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+.header h1 { color: #fff; font-size: 16px; font-weight: 700; }
 .header p  { color: #cffafe; font-size: 11px; margin-top: 2px; }
-
-/* Card */
-.card { background: var(--card); border-radius: 10px; box-shadow: var(--shadow); margin-bottom: 10px; overflow: hidden; }
-.card-title { padding: 12px 14px; font-size: 13px; font-weight: 700; color: var(--text); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 6px; }
+.card { background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,.06); margin-bottom: 10px; overflow: hidden; }
+.card-title { padding: 12px 14px; font-size: 13px; font-weight: 700; border-bottom: 1px solid #e2e8f0; }
 .card-body { padding: 10px 14px 14px; }
-
-/* Form */
 .form-group { margin-bottom: 10px; }
-.form-label { font-size: 11px; color: var(--text2); margin-bottom: 4px; display: block; }
-.form-sub { font-size: 11px; font-weight: 700; color: var(--accent2); margin: 10px 0 4px; }
-input, select { width: 100%; padding: 10px 12px; font-size: 14px; border: 1px solid var(--border); border-radius: 8px; background: #f8fafc; color: var(--text); -webkit-appearance: none; appearance: none; }
-input:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(8,145,178,.1); }
+.form-label { font-size: 11px; color: #64748b; margin-bottom: 4px; display: block; }
+.form-sub { font-size: 11px; font-weight: 700; color: #0e7490; margin: 10px 0 4px; }
+input, select { width: 100%; padding: 10px 12px; font-size: 14px; border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc; color: #1e293b; -webkit-appearance: none; }
+input:focus, select:focus { outline: none; border-color: #0891b2; }
 .input-row { display: flex; gap: 8px; align-items: center; }
-.input-row span { font-size: 12px; color: var(--text2); white-space: nowrap; }
+.input-row span { font-size: 12px; color: #64748b; white-space: nowrap; }
 .input-row input { flex: 1; }
-
-/* Button */
-.btn { width: 100%; padding: 12px; font-size: 14px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; transition: .15s; }
-.btn-calc { background: var(--accent); color: #fff; }
-.btn-calc:active { background: var(--accent2); }
+.btn { width: 100%; padding: 12px; font-size: 14px; font-weight: 700; border: none; border-radius: 8px; cursor: pointer; }
+.btn-calc { background: #0891b2; color: #fff; }
 .btn-row { display: flex; gap: 8px; margin-top: 10px; }
-.btn-sm { flex: 1; padding: 8px; font-size: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); color: var(--text2); cursor: pointer; }
-.btn-sm:active { background: #f1f5f9; }
-
-/* Rule Table */
+.btn-sm { flex: 1; padding: 8px; font-size: 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff; color: #64748b; cursor: pointer; }
 .rule-table { width: 100%; font-size: 10px; border-collapse: collapse; }
-.rule-table th { background: var(--accent2); color: #fff; padding: 6px 3px; text-align: center; }
-.rule-table td { padding: 5px 3px; text-align: center; border-bottom: 1px solid var(--border); }
+.rule-table th { background: #0e7490; color: #fff; padding: 6px 3px; text-align: center; }
+.rule-table td { padding: 5px 3px; text-align: center; border-bottom: 1px solid #e2e8f0; }
 .rule-table tr:nth-child(even) td { background: #f8fafc; }
-
-/* Result */
-.result { background: #f8fafc; border-radius: 8px; padding: 12px; font-family: "SF Mono", "Consolas", monospace; font-size: 12px; line-height: 1.65; white-space: pre-wrap; overflow-x: auto; max-height: 70vh; overflow-y: auto; }
-.result .sec { color: var(--accent2); font-weight: 700; font-size: 13px; }
-.result .val { color: var(--accent2); font-weight: 700; }
-.result .good { color: var(--green); font-weight: 700; }
-.result .warn { color: var(--orange); font-weight: 700; }
-.result .lbl { color: var(--text2); }
-.result .ttl { color: var(--accent2); font-weight: 700; font-size: 14px; }
-
-/* Stepper */
-.stepper { display: flex; gap: 0; margin-bottom: 10px; }
-.stepper .step { flex: 1; text-align: center; padding: 6px 4px; font-size: 11px; font-weight: 700; background: #e2e8f0; color: var(--text2); }
-.stepper .step.active { background: var(--accent); color: #fff; }
-.stepper .sep { width: 2px; background: var(--border); }
-
-/* Footer */
+.result { background: #f8fafc; border-radius: 8px; padding: 12px; font-size: 13px; line-height: 1.7; white-space: pre-wrap; overflow-x: auto; max-height: 70vh; overflow-y: auto; word-break: break-all; }
+.stepper { display: flex; margin-bottom: 10px; }
+.stepper .step { flex: 1; text-align: center; padding: 8px 4px; font-size: 11px; font-weight: 700; background: #e2e8f0; color: #64748b; transition: .2s; }
+.stepper .step.done { background: #0891b2; color: #fff; }
 .footer { text-align: center; font-size: 10px; color: #94a3b8; padding: 10px 0; }
+.g { color: #059669; font-weight: 700; }
+.w { color: #d97706; font-weight: 700; }
+.b { color: #0e7490; font-weight: 700; }
 </style>
 </head>
 <body>
 <div class="app">
   <div class="header">
     <h1>压缩空气干燥机 &amp; 过滤器选型计算</h1>
-    <p>冷干机 / 吸干机 / 过滤器 — 工程选型工具 v3.0</p>
+    <p>冷干机 / 吸干机 / 过滤器 — 工程选型工具 v3.1</p>
   </div>
 
-  <!-- 步骤指示 -->
   <div class="stepper">
-    <div class="step active" id="st1">&#x1F4CB; 参数输入</div>
-    <div class="sep"></div>
-    <div class="step" id="st2">&#x2699;&#xFE0F; 机型判定</div>
-    <div class="sep"></div>
-    <div class="step" id="st3">&#x1F4CA; 计算选型</div>
+    <div class="step done" id="st1">📋 参数输入</div>
+    <div class="step" id="st2">⚙️ 机型判定</div>
+    <div class="step" id="st3">📊 计算选型</div>
   </div>
 
-  <!-- 输入卡片 -->
   <div class="card" id="card-input">
-    <div class="card-title">&#x1F4E5; 设计输入参数</div>
+    <div class="card-title">📥 设计输入参数</div>
     <div class="card-body">
-      <div class="form-sub">&#x1F4CF; 流量参数</div>
+      <div class="form-sub">📏 流量参数</div>
       <div class="form-group">
         <label class="form-label">空气流量</label>
-        <div class="input-row"><input type="number" id="flow" value="10" step="0.1" min="0.1"><span>Nm&#xB3;/min</span></div>
+        <div class="input-row"><input type="number" id="flow" value="10" step="0.1" min="0.1"><span>Nm³/min</span></div>
       </div>
 
-      <div class="form-sub">&#x26A1; 压力参数</div>
+      <div class="form-sub">⚡ 压力参数</div>
       <div class="form-group">
         <label class="form-label">工作压力</label>
         <div class="input-row"><input type="number" id="pressure" value="10" step="0.1" min="0.1"><span>bar(g)</span></div>
       </div>
 
-      <div class="form-sub">&#x1F321;&#xFE0F; 温度参数</div>
+      <div class="form-sub">🌡️ 温度参数</div>
       <div class="form-group">
         <label class="form-label">进气温度</label>
-        <div class="input-row"><input type="number" id="temp_in" value="110" step="1" min="-30" max="200"><span>&#x2103;</span></div>
+        <div class="input-row"><input type="number" id="temp_in" value="110" step="1" min="-30" max="200"><span>℃</span></div>
       </div>
 
-      <div class="form-sub">&#x2744;&#xFE0F; 露点要求</div>
+      <div class="form-sub">❄️ 露点要求</div>
       <div class="form-group">
         <label class="form-label">压力露点</label>
         <select id="dew_point">
-          <option value="7">3~10&#x2103;（冷干机）</option>
-          <option value="-20" selected>-20&#x2103;</option>
-          <option value="-40">-40&#x2103;</option>
-          <option value="-70">-70&#x2103;（组合式）</option>
+          <option value="7">3~10℃（冷干机）</option>
+          <option value="-20" selected>-20℃</option>
+          <option value="-40">-40℃</option>
+          <option value="-70">-70℃（组合式）</option>
         </select>
       </div>
 
-      <div class="form-sub">&#x1F52C; 吸附剂参数（吸干机用）</div>
+      <div class="form-sub">🔬 吸附剂参数（吸干机用）</div>
       <div class="form-group">
         <label class="form-label">循环周期</label>
         <div class="input-row"><input type="number" id="cycle" value="4" step="0.5" min="1"><span>小时</span></div>
@@ -141,318 +99,269 @@ input:focus, select:focus { outline: none; border-color: var(--accent); box-shad
         <div class="input-row"><input type="number" id="ads_cap" value="8" step="1" min="1" max="100"><span>%</span></div>
       </div>
 
-      <button class="btn btn-calc" onclick="calculate()">&#x25B6;&#xFE0F; 执行计算</button>
+      <button class="btn btn-calc" onclick="calculate()">▶️ 执行计算</button>
     </div>
   </div>
 
-  <!-- 选型参考卡片 -->
   <div class="card">
-    <div class="card-title">&#x1F4CB; 干燥机选型参考表</div>
+    <div class="card-title">📋 干燥机选型参考表</div>
     <div class="card-body" style="padding:0; overflow-x:auto;">
       <table class="rule-table">
         <thead><tr><th>露点</th><th>入口温度</th><th>工作压力</th><th>流量范围</th><th>推荐机型</th></tr></thead>
         <tbody>
-          <tr><td>3~10&#x2103;</td><td>&#x2264; 45&#x2103;</td><td>&#x2265; 0.4 MPaG</td><td>1~400 Nm&#xB3;/min</td><td>冷冻式</td></tr>
-          <tr><td>-20~-40&#x2103;</td><td>&#x2264; 45&#x2103;</td><td>&#x2265; 0.5 MPaG</td><td>1~10 Nm&#xB3;/min</td><td>无热再生</td></tr>
-          <tr><td>-20~-40&#x2103;</td><td>&#x2264; 45&#x2103;</td><td>&#x2265; 0.5 MPaG</td><td>10~20 Nm&#xB3;/min</td><td>微热再生</td></tr>
-          <tr><td>-20~-40&#x2103;</td><td>&#x2264; 45&#x2103;</td><td>&#x2265; 0.5 MPaG</td><td>20~300 Nm&#xB3;/min</td><td>鼓风热再生</td></tr>
-          <tr><td>-20~-40&#x2103;</td><td>&#x2265; 100&#x2103;</td><td>&#x2265; 0.5 MPaG</td><td>60~1000 Nm&#xB3;/min</td><td>压缩热再生</td></tr>
-          <tr><td>-70&#x2103;</td><td>&#x2014;</td><td>&#x2265; 0.5 MPaG</td><td>&#x2014;</td><td>组合式</td></tr>
+          <tr><td>3~10℃</td><td>≤ 45℃</td><td>≥ 0.4 MPaG</td><td>1~400 Nm³/min</td><td>冷冻式</td></tr>
+          <tr><td>-20~-40℃</td><td>≤ 45℃</td><td>≥ 0.5 MPaG</td><td>1~10 Nm³/min</td><td>无热再生</td></tr>
+          <tr><td>-20~-40℃</td><td>≤ 45℃</td><td>≥ 0.5 MPaG</td><td>10~20 Nm³/min</td><td>微热再生</td></tr>
+          <tr><td>-20~-40℃</td><td>≤ 45℃</td><td>≥ 0.5 MPaG</td><td>20~300 Nm³/min</td><td>鼓风热再生</td></tr>
+          <tr><td>-20~-40℃</td><td>≥ 100℃</td><td>≥ 0.5 MPaG</td><td>60~1000 Nm³/min</td><td>压缩热再生</td></tr>
+          <tr><td>-70℃</td><td>—</td><td>≥ 0.5 MPaG</td><td>—</td><td>组合式</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- 结果卡片 -->
   <div class="card">
-    <div class="card-title">&#x1F4CA; 计算结果</div>
+    <div class="card-title">📊 计算结果</div>
     <div class="card-body">
-      <div class="result" id="result">点击「执行计算」查看计算结果</div>
+      <div id="result" class="result"></div>
       <div class="btn-row">
-        <button class="btn-sm" onclick="copyResult()">&#x1F4CB; 复制结果</button>
-        <button class="btn-sm" onclick="exportReport()">&#x1F4C4; 导出报告</button>
+        <button class="btn-sm" onclick="copyResult()">📋 复制结果</button>
+        <button class="btn-sm" onclick="exportReport()">📄 导出报告</button>
       </div>
     </div>
   </div>
 
-  <div class="footer">v3.0 | 杭州钒钛 | Web Edition</div>
+  <div class="footer">v3.1 | 杭州钒钛 | Web Edition</div>
 </div>
 
 <script>
-"use strict";
+(function() {
+  'use strict';
 
-// ==================== 核心计算引擎 ====================
-
-function calcWaterVaporPressure(Tc) {
-  var T = Tc + 273.15;
-  if (Tc > 0) {
-    return Math.pow(10, (10.286 * T - 2148.4909) / (T - 35.85)) / 1000000;
+  // ====== 计算核心 ======
+  function calcWaterVaporPressure(Tc) {
+    var T = Tc + 273.15;
+    if (Tc > 0) return Math.pow(10, (10.286 * T - 2148.4909) / (T - 35.85)) / 1000000;
+    return Math.pow(10, 12.5633 - 2670.59 / T) / 1000000;
   }
-  return Math.pow(10, 12.5633 - 2670.59 / T) / 1000000;
-}
 
-function calcAirProperties(Tc, Pmpa) {
-  var Ps = calcWaterVaporPressure(Tc);
-  var rho_d = 0.003484 * Pmpa * 1000000 / (273.15 + Tc);
-  var d_m = 0.622 * Ps / (Pmpa - Ps) * 1000;
-  var d_v = rho_d * d_m;
-  var rho_w = Pmpa * 1000000 * (1 + d_m / 1000) / (461.5 * (273.15 + Tc) * (0.622 + d_m / 1000));
-  var h = 1.005 * Tc + d_m * (2500 + 1.84 * Tc) / 1000;
-  var ppmV = Ps / (Pmpa - Ps) * 1000000;
-  return { Ps: Ps, rho_d: rho_d, d_m: d_m, d_v: d_v, rho_w: rho_w, h: h, ppmV: ppmV };
-}
-
-var DRYER_COLD  = 'cold';
-var DRYER_ADS   = 'ads';
-var DRYER_COMBO = 'combo';
-
-function classifyDryer(dewPoint, inletTemp, pressureMpa, flow) {
-  if (dewPoint === -70) {
-    return [DRYER_COMBO, '组合式干燥机', true, '露点 -70\u2103 \u2192 组合式'];
+  function calcAirProperties(Tc, Pmpa) {
+    var Ps = calcWaterVaporPressure(Tc);
+    var rho_d = 0.003484 * Pmpa * 1000000 / (273.15 + Tc);
+    var d_m = 0.622 * Ps / (Pmpa - Ps) * 1000;
+    var d_v = rho_d * d_m;
+    var rho_w = Pmpa * 1000000 * (1 + d_m / 1000) / (461.5 * (273.15 + Tc) * (0.622 + d_m / 1000));
+    var h = 1.005 * Tc + d_m * (2500 + 1.84 * Tc) / 1000;
+    var ppmV = Ps / (Pmpa - Ps) * 1000000;
+    return { Ps: Ps, rho_d: rho_d, d_m: d_m, d_v: d_v, rho_w: rho_w, h: h, ppmV: ppmV };
   }
-  if (dewPoint >= 3 && dewPoint <= 10) {
-    if (inletTemp <= 45 && pressureMpa >= 0.4 && flow >= 1 && flow <= 400) {
-      return [DRYER_COLD, '冷冻式干燥机', true, '露点 3~10\u2103 \u2192 冷干机'];
+
+  function fmt(n, d) { d = d || 2; return Number(n).toFixed(d); }
+
+  function classifyDryer(dewPoint, inletTemp, pressureMpa, flow) {
+    if (dewPoint === -70) return ['combo', '组合式干燥机', true, '露点 -70℃ → 组合式'];
+    if (dewPoint >= 3 && dewPoint <= 10) {
+      if (inletTemp <= 45 && pressureMpa >= 0.4 && flow >= 1 && flow <= 400)
+        return ['cold', '冷冻式干燥机', true, '露点 3~10℃ → 冷干机'];
+      return ['cold', '冷冻式干燥机', false, '露点符合但参数范围不满足'];
     }
-    return [DRYER_COLD, '冷冻式干燥机', false, '露点符合，但不满足其他参数范围'];
-  }
-  if (dewPoint >= -40 && dewPoint <= -20) {
-    if (inletTemp <= 45 && pressureMpa >= 0.5) {
-      if (flow >= 1 && flow <= 10) {
-        return [DRYER_ADS, '无热吸附式干燥机', true, '露点 -20~-40\u2103 + 小流量 \u2192 无热再生'];
+    if (dewPoint >= -40 && dewPoint <= -20) {
+      if (inletTemp <= 45 && pressureMpa >= 0.5) {
+        if (flow >= 1 && flow <= 10) return ['ads', '无热吸附式干燥机', true, '露点 -20~-40℃ + 小流量 → 无热再生'];
+        if (flow > 10 && flow <= 20) return ['ads', '微热吸附式干燥机', true, '露点 -20~-40℃ + 中流量 → 微热再生'];
+        if (flow > 20 && flow <= 300) return ['ads', '鼓风热吸附式干燥机', true, '露点 -20~-40℃ + 大流量 → 鼓风热再生'];
+        return ['ads', '鼓风热吸附式干燥机', false, '流量超出标准范围'];
       }
-      if (flow > 10 && flow <= 20) {
-        return [DRYER_ADS, '微热吸附式干燥机', true, '露点 -20~-40\u2103 + 中流量 \u2192 微热再生'];
-      }
-      if (flow > 20 && flow <= 300) {
-        return [DRYER_ADS, '鼓风热吸附式干燥机', true, '露点 -20~-40\u2103 + 大流量 \u2192 鼓风热再生'];
-      }
-      return [DRYER_ADS, '鼓风热吸附式干燥机', false, '流量范围超出标准'];
+      if (inletTemp >= 110 && pressureMpa >= 0.5 && flow >= 60 && flow <= 1000)
+        return ['ads', '压缩热吸附式干燥机', true, '露点 -20~-40℃ + 高温 → 压缩热再生'];
     }
-    if (inletTemp >= 110 && pressureMpa >= 0.5 && flow >= 60 && flow <= 1000) {
-      return [DRYER_ADS, '压缩热吸附式干燥机', true, '露点 -20~-40\u2103 + 高温 \u2192 压缩热再生'];
-    }
-  }
-  return [null, '', false, '参数无法匹配推荐机型'];
-}
-
-function calcSelectionFlow(dryerClass, dryerName, flow, pressureBar, tempIn) {
-  var Pmpa = pressureBar / 10;
-  var isCompHeat = dryerName.indexOf('\u538b\u7f29\u70ed') !== -1;
-  var calcTemp = isCompHeat ? 40 : tempIn;
-
-  if (dryerClass === DRYER_COLD) {
-    var pRef = calcAirProperties(38, 0.8);
-    var pIn  = calcAirProperties(tempIn, Pmpa);
-    var coeff = pIn.h / pRef.h;
-    var Qsel = flow * coeff;
-    var detail = 'h_actual(' + Pmpa.toFixed(2) + 'MPa,' + tempIn + '\u2103)=' + pIn.h.toFixed(2) + ' / h_ref(0.8MPa,38\u2103)=' + pRef.h.toFixed(2);
-    return [Qsel, 'Q \u00d7 (h_actual/h_ref)', coeff, detail];
+    return [null, '', false, '参数无法匹配推荐机型'];
   }
 
-  if (dryerClass === DRYER_ADS || dryerClass === DRYER_COMBO) {
-    if (pressureBar > 8) {
-      var coeff = Math.sqrt(8 / pressureBar);
-      var Qsel = flow * coeff;
-      var extra = isCompHeat ? ' | \u538b\u7f29\u70ed T_calc=40\u2103' : '';
-      var detail = '\u221a(8/P) = \u221a(8/' + pressureBar.toFixed(1) + ')' + extra;
-      return [Qsel, 'Q \u00d7 \u221a(8/P)', coeff, detail];
-    } else {
+  function calcSelectionFlow(dryerClass, dryerName, flow, pressureBar, tempIn) {
+    var Pmpa = pressureBar / 10;
+    var isCompHeat = dryerName.indexOf('压缩热') !== -1;
+    if (dryerClass === 'cold') {
       var pRef = calcAirProperties(38, 0.8);
-      var pIn  = calcAirProperties(calcTemp, Pmpa);
-      var coeff = pIn.d_m / pRef.d_m;
-      var Qsel = flow * coeff;
-      var tLabel = isCompHeat ? calcTemp + '\u2103(\u538b\u7f29\u70ed\u6807\u5b9a)' : tempIn + '\u2103';
-      var detail = 'd_actual(' + Pmpa.toFixed(2) + 'MPa,' + tLabel + ')=' + pIn.d_m.toFixed(4) + ' / d_ref(0.8MPa,38\u2103)=' + pRef.d_m.toFixed(4);
-      var fDesc = 'Q \u00d7 (d_actual/d_ref)' + (isCompHeat ? ' [\u538b\u7f29\u70ed T=40\u2103]' : '');
-      return [Qsel, fDesc, coeff, detail];
+      var pIn = calcAirProperties(tempIn, Pmpa);
+      var c = pIn.h / pRef.h;
+      return [flow * c, 'Q × (h_actual/h_ref)', c,
+        'h_actual(' + Pmpa.toFixed(2) + 'MPa,' + tempIn + '℃)=' + fmt(pIn.h) +
+        ' / h_ref(0.8MPa,38℃)=' + fmt(pRef.h)];
     }
-  }
-
-  return [flow, 'Q (\u65e0\u4fee\u6b63)', 1, ''];
-}
-
-function selectFilterSize(flowNm3, pressureBar) {
-  var Qact = flowNm3 * 1.013 / (pressureBar + 1.013);
-  var sizes = [
-    [0.5,  'DN15 (1/2")'],
-    [1,    'DN20 (3/4")'],
-    [2,    'DN25 (1")'],
-    [4,    'DN40 (1-1/2")'],
-    [7,    'DN50 (2")'],
-    [12,   'DN65 (2-1/2")'],
-    [20,   'DN80 (3")'],
-    [35,   'DN100 (4")'],
-    [80,   'DN150 (6")'],
-    [120,  'DN200 (8")'],
-    [180,  'DN250 (10")'],
-    [250,  'DN300 (12")']
-  ];
-  for (var i = 0; i < sizes.length; i++) {
-    if (Qact <= sizes[i][0]) {
-      return sizes[i][1] + ' (Qact=' + Qact.toFixed(2) + ' m\u00b3/min)';
+    if (dryerClass === 'ads' || dryerClass === 'combo') {
+      if (pressureBar > 8) {
+        var c = Math.sqrt(8 / pressureBar);
+        var xtra = isCompHeat ? ' | 压缩热 T_calc=40℃' : '';
+        return [flow * c, 'Q × √(8/P)', c,
+          '√(8/P) = √(8/' + pressureBar.toFixed(1) + ')' + xtra];
+      }
+      var pRef = calcAirProperties(38, 0.8);
+      var calcTemp = isCompHeat ? 40 : tempIn;
+      var pIn = calcAirProperties(calcTemp, Pmpa);
+      var c = pIn.d_m / pRef.d_m;
+      var tL = isCompHeat ? calcTemp + '℃(压缩热标定)' : tempIn + '℃';
+      return [flow * c, 'Q × (d_actual/d_ref)' + (isCompHeat ? ' [压缩热]' : ''), c,
+        'd_actual(' + Pmpa.toFixed(2) + 'MPa,' + tL + ')=' + fmt(pIn.d_m, 4) +
+        ' / d_ref(0.8MPa,38℃)=' + fmt(pRef.d_m, 4)];
     }
-  }
-  return '\u9700\u5b9a\u5236 (Qact=' + Qact.toFixed(2) + ' m\u00b3/min)';
-}
-
-function fmt(n, d) { d = d || 2; return Number(n).toFixed(d); }
-
-// ==================== 主计算流程 ====================
-
-function calculate() {
-  var flow        = parseFloat(document.getElementById('flow').value) || 10;
-  var pressureBar = parseFloat(document.getElementById('pressure').value) || 10;
-  var tempIn      = parseFloat(document.getElementById('temp_in').value) || 110;
-  var dewPoint    = parseInt(document.getElementById('dew_point').value);
-  var cycleH      = parseFloat(document.getElementById('cycle').value) || 4;
-  var adsCap      = parseFloat(document.getElementById('ads_cap').value) || 8;
-  var Pmpa        = pressureBar / 10;
-
-  // Step 1: 按露点判定机型
-  var cls = classifyDryer(dewPoint, tempIn, Pmpa, flow);
-  var dryerClass = cls[0];
-  var dryerName  = cls[1];
-  var valid      = cls[2];
-  var reason     = cls[3];
-  var classMap   = { cold: '\u51b7\u51bb\u5f0f\u5e72\u71e5\u673a', ads: '\u5438\u9644\u5f0f\u5e72\u71e5\u673a', combo: '\u7ec4\u5408\u5f0f\u5e72\u71e5\u673a' };
-
-  // Step 2: 修正公式计算选型流量
-  var Qsel, formula, coeff, detail;
-  if (dryerClass) {
-    var sel = calcSelectionFlow(dryerClass, dryerName, flow, pressureBar, tempIn);
-    Qsel    = sel[0];
-    formula = sel[1];
-    coeff   = sel[2];
-    detail  = sel[3];
-  } else {
-    Qsel = flow; formula = '-'; coeff = 1; detail = '';
+    return [flow, 'Q (无修正)', 1, ''];
   }
 
-  // Properties
-  var pIn  = calcAirProperties(tempIn, Pmpa);
-  var pOut = calcAirProperties(dewPoint, Pmpa);
-
-  // Filter
-  var filterSize = selectFilterSize(flow, pressureBar);
-
-  // Water & adsorbent
-  var waterPerDay = flow * 1.29 * (pIn.d_m - pOut.d_m) / 1000 * 60 * 24;
-  var adsFill     = waterPerDay / 24 / (adsCap / 100) * cycleH;
-
-  // Build output HTML
-  var classLabel = dryerClass ? classMap[dryerClass] : '';
-  var statusIcon = valid ? '\u2705' : '\u26a0\ufe0f';
-  var statusCls  = valid ? 'good' : 'warn';
-
-  var out = '';
-  out += '<span class="ttl">\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550</span>\n';
-  out += '<span class="ttl">  \u5e72\u71e5\u673a &amp; \u8fc7\u6ee4\u5668\u9009\u578b\u8ba1\u7b97\u7ed3\u679c</span>\n';
-  out += '<span class="ttl">\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550</span>\n\n';
-  out += '<span class="sec">\u25ce \u8f93\u5165\u53c2\u6570</span>\n';
-  out += '  \u7a7a\u6c14\u6d41\u91cf:      ' + flow + ' Nm\u00b3/min\n';
-  out += '  \u5de5\u4f5c\u538b\u529b:      ' + fmt(pressureBar, 1) + ' bar(g)  (' + fmt(Pmpa, 2) + ' MPa)\n';
-  out += '  \u8fdb\u6c14\u6e29\u5ea6:      ' + tempIn + ' \u2103\n';
-  out += '  \u538b\u529b\u9732\u70b9:      ' + dewPoint + ' \u2103\n\n';
-
-  out += '<span class="sec">\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500</span>\n';
-  out += '<span class="sec">  STEP 1 \u2500 \u6309\u9732\u70b9\u5224\u5b9a\u673a\u578b</span>\n';
-  out += '<span class="sec">\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500</span>\n';
-  out += '  \u9732\u70b9 ' + dewPoint + '\u2103\n';
-  out += '  <span class="' + statusCls + '">' + statusIcon + ' ' + reason + '</span>\n';
-  if (dryerClass) {
-    out += '  <span class="val">\u5224\u5b9a\u5927\u7c7b\uff1a' + classLabel + '</span>\n';
-    out += '  <span class="val">\u5177\u4f53\u673a\u578b\uff1a' + dryerName + '</span>\n';
-  } else {
-    out += '  <span class="warn">\u7ed3\u679c\uff1a\u65e0\u6cd5\u5339\u914d</span>\n';
+  function selectFilterSize(flowNm3, pressureBar) {
+    var Qact = flowNm3 * 1.013 / (pressureBar + 1.013);
+    var sizes = [
+      [0.5, 'DN15 (1/2")'], [1, 'DN20 (3/4")'], [2, 'DN25 (1")'],
+      [4, 'DN40 (1-1/2")'], [7, 'DN50 (2")'], [12, 'DN65 (2-1/2")'],
+      [20, 'DN80 (3")'], [35, 'DN100 (4")'], [80, 'DN150 (6")'],
+      [120, 'DN200 (8")'], [180, 'DN250 (10")'], [250, 'DN300 (12")']
+    ];
+    for (var i = 0; i < sizes.length; i++)
+      if (Qact <= sizes[i][0])
+        return sizes[i][1] + ' (Qact=' + fmt(Qact) + ' m³/min)';
+    return '需定制 (Qact=' + fmt(Qact) + ' m³/min)';
   }
-  out += '\n';
 
-  out += '<span class="sec">\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500</span>\n';
-  out += '<span class="sec">  STEP 2 \u2500 \u4fee\u6b63\u516c\u5f0f \u8ba1\u7b97\u9009\u578b\u6d41\u91cf</span>\n';
-  out += '<span class="sec">\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500</span>\n';
-  out += '  \u673a\u578b\uff1a' + dryerName + '\n';
-  out += '  \u4fee\u6b63\u516c\u5f0f\uff1a' + formula + '\n';
-  out += '  \u4fee\u6b63\u7cfb\u6570\uff1a' + fmt(coeff, 6) + '\n';
-  if (detail) out += '  ' + detail + '\n';
-  out += '  <span class="good">\u6700\u7ec8\u9009\u578b\u6d41\u91cf\uff1a' + fmt(Qsel, 2) + ' Nm\u00b3/min</span>\n\n';
+  // ====== 主计算（挂载到window供onclick调用）======
+  window.calculate = function() {
+    try {
+      var flow = parseFloat(document.getElementById('flow').value) || 10;
+      var pressureBar = parseFloat(document.getElementById('pressure').value) || 10;
+      var tempIn = parseFloat(document.getElementById('temp_in').value) || 110;
+      var dewPoint = parseInt(document.getElementById('dew_point').value, 10);
+      var cycleH = parseFloat(document.getElementById('cycle').value) || 4;
+      var adsCap = parseFloat(document.getElementById('ads_cap').value) || 8;
+      var Pmpa = pressureBar / 10;
 
-  out += '<span class="sec">\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500</span>\n';
-  out += '<span class="sec">  \u6e7f\u7a7a\u6c14\u7269\u6027\u53c2\u6570</span>\n';
-  out += '<span class="sec">\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500</span>\n';
-  out += '  \u6c34\u84b8\u6c14\u5206\u538b\uff1a    ' + fmt(pIn.Ps * 1000, 4) + ' kPa\n';
-  out += '  \u5e72\u7a7a\u6c14\u5bc6\u5ea6\uff1a    ' + fmt(pIn.rho_d, 4) + ' kg/m\u00b3\n';
-  out += '  \u9971\u548c\u542b\u6e7f\u91cf\uff1a    ' + fmt(pIn.d_m, 4) + ' g/kg\u5e72\n';
-  out += '  \u9971\u548c\u542b\u6e7f\u91cf\uff1a    ' + fmt(pIn.d_v, 2) + ' g/m\u00b3\n';
-  out += '  \u6e7f\u7a7a\u6c14\u5bc6\u5ea6\uff1a    ' + fmt(pIn.rho_w, 4) + ' kg/m\u00b3\n';
-  out += '  \u9971\u548c\u7a7a\u6c14\u6bd4\u7113\uff1a  ' + fmt(pIn.h, 2) + ' kJ/kg\u5e72\n';
-  out += '  \u7edd\u5bf9\u542b\u6e7f\u91cf\uff1a    ' + fmt(pIn.ppmV, 1) + ' ppmV\n\n';
+      // Step 1: 判定机型
+      var cls = classifyDryer(dewPoint, tempIn, Pmpa, flow);
+      var dryerClass = cls[0], dryerName = cls[1], valid = cls[2], reason = cls[3];
+      var classMap = { cold: '冷冻式干燥机', ads: '吸附式干燥机', combo: '组合式干燥机' };
 
-  out += '<span class="sec">\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500</span>\n';
-  out += '<span class="sec">  \u8fc7\u6ee4\u5668 &amp; \u9664\u6c34\u8ba1\u7b97</span>\n';
-  out += '<span class="sec">\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500</span>\n';
-  out += '  <span class="val">\u63a8\u8350\u8fc7\u6ee4\u5668\u53e3\u5f84\uff1a' + filterSize + '</span>\n';
-  out += '  d_in(' + tempIn + '\u2103) = ' + fmt(pIn.d_m, 4) + ' g/kg\u5e72\n';
-  out += '  d_out(' + dewPoint + '\u2103) = ' + fmt(pOut.d_m, 6) + ' g/kg\u5e72\n';
-  out += '  \u0394d = ' + fmt(pIn.d_m - pOut.d_m, 4) + ' g/kg\u5e72\n';
-  out += '  <span class="good">\u6bcf\u5929\u9664\u53bb\u6c34\u5206\uff1a' + fmt(waterPerDay, 1) + ' kg/d</span>\n';
-  out += '  <span class="good">\u5438\u9644\u5242\u586b\u5145\u91cf\uff1a' + fmt(adsFill, 1) + ' kg</span>\n';
+      // Step 2: 选型流量
+      var Qsel, formula, coeff, detail;
+      if (dryerClass) {
+        var s = calcSelectionFlow(dryerClass, dryerName, flow, pressureBar, tempIn);
+        Qsel = s[0]; formula = s[1]; coeff = s[2]; detail = s[3];
+      } else { Qsel = flow; formula = '-'; coeff = 1; detail = ''; }
 
-  document.getElementById('result').innerHTML = out;
+      // 空气物性
+      var pIn = calcAirProperties(tempIn, Pmpa);
+      var pOut = calcAirProperties(dewPoint, Pmpa);
 
-  // Update stepper
-  document.getElementById('st1').classList.remove('active');
-  document.getElementById('st2').classList.add('active');
-  document.getElementById('st3').classList.add('active');
+      // 过滤器 & 除水
+      var filterSize = selectFilterSize(flow, pressureBar);
+      var waterPerDay = flow * 1.29 * (pIn.d_m - pOut.d_m) / 1000 * 60 * 24;
+      var adsFill = waterPerDay / 24 / (adsCap / 100) * cycleH;
 
-  // Scroll to result
-  document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
+      // 构建输出（纯文本 + 简单标记）
+      var lines = [];
+      var sep = '━━━━━━━━━━━━━━━━━━━━━━━━━━━━';
+      lines.push(sep);
+      lines.push('  干燥机 & 过滤器选型计算结果');
+      lines.push(sep);
+      lines.push('');
+      lines.push('[输入参数]');
+      lines.push('  空气流量:      ' + flow + ' Nm³/min');
+      lines.push('  工作压力:      ' + fmt(pressureBar, 1) + ' bar(g)  (' + fmt(Pmpa, 2) + ' MPa)');
+      lines.push('  进气温度:      ' + tempIn + ' ℃');
+      lines.push('  压力露点:      ' + dewPoint + ' ℃');
+      lines.push('');
 
-// ==================== 导出 / 复制 ====================
+      var icon = valid ? '✅' : '⚠️';
+      lines.push('[STEP 1] 按露点判定机型');
+      lines.push('  ' + icon + ' ' + reason);
+      if (dryerClass) {
+        lines.push('  大类：' + classMap[dryerClass]);
+        lines.push('  机型：' + dryerName);
+      } else { lines.push('  ⚠️ 结果：无法匹配'); }
+      lines.push('');
 
-function copyResult() {
-  var el = document.getElementById('result');
-  var text = el.innerText;
-  navigator.clipboard.writeText(text).then(function() {
-    var btn = document.querySelector('.btn-sm');
-    var orig = btn.textContent;
-    btn.textContent = '\u2714 \u5df2\u590d\u5236';
-    setTimeout(function() { btn.textContent = orig; }, 1500);
-  }).catch(function() {
-    alert('\u590d\u5236\u5931\u8d25\uff0c\u8bf7\u624b\u52a8\u9009\u62e9');
-  });
-}
+      lines.push('[STEP 2] 修正公式 — 选型流量');
+      lines.push('  公式：' + formula);
+      lines.push('  系数：' + fmt(coeff, 6));
+      if (detail) lines.push('  ' + detail);
+      lines.push('  ▶ 最终选型流量：' + fmt(Qsel, 2) + ' Nm³/min');
+      lines.push('');
 
-function exportReport() {
-  var el = document.getElementById('result');
-  var text = el.innerText;
-  var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = '\u5e72\u71e5\u673a\u9009\u578b\u62a5\u544a_' + new Date().toISOString().slice(0, 10) + '.txt';
-  a.click();
-  URL.revokeObjectURL(url);
-}
+      lines.push('[湿空气物性参数]');
+      lines.push('  水蒸气分压：    ' + fmt(pIn.Ps * 1000, 4) + ' kPa');
+      lines.push('  干空气密度：    ' + fmt(pIn.rho_d, 4) + ' kg/m³');
+      lines.push('  饱和含湿量：    ' + fmt(pIn.d_m, 4) + ' g/kg干');
+      lines.push('  饱和含湿量：    ' + fmt(pIn.d_v, 2) + ' g/m³');
+      lines.push('  湿空气密度：    ' + fmt(pIn.rho_w, 4) + ' kg/m³');
+      lines.push('  饱和空气比焓：  ' + fmt(pIn.h, 2) + ' kJ/kg干');
+      lines.push('  绝对含湿量：    ' + fmt(pIn.ppmV, 1) + ' ppmV');
+      lines.push('');
 
-// 输入框实时计算
-var inputs = document.querySelectorAll('input, select');
-for (var i = 0; i < inputs.length; i++) {
-  inputs[i].addEventListener('input', function() { calculate(); });
-}
+      lines.push('[过滤器 & 除水计算]');
+      lines.push('  ▶ 推荐过滤器口径：' + filterSize);
+      lines.push('  d_in(' + tempIn + '℃)  = ' + fmt(pIn.d_m, 4) + ' g/kg干');
+      lines.push('  d_out(' + dewPoint + '℃) = ' + fmt(pOut.d_m, 6) + ' g/kg干');
+      lines.push('  Δd = ' + fmt(pIn.d_m - pOut.d_m, 4) + ' g/kg干');
+      lines.push('  ▶ 每天除去水分：' + fmt(waterPerDay, 1) + ' kg/d');
+      lines.push('  ▶ 吸附剂填充量：' + fmt(adsFill, 1) + ' kg');
 
-// 初始计算
-calculate();
-</script>
-<script>
-// Service Worker offline support
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('data:application/javascript,' + encodeURIComponent(
-    'self.addEventListener("install",function(e){e.waitUntil(caches.open("dryer-v1").then(function(c){return c.addAll(["."])}));self.skipWaiting()});' +
-    'self.addEventListener("fetch",function(e){e.respondWith(caches.match(e.request).then(function(r){return r||fetch(e.request)}))});'
-  ), {scope: '/'}).catch(function() {});
-}
+      var el = document.getElementById('result');
+      if (!el) { alert('错误：找不到结果容器'); return; }
+      el.innerHTML = lines.join('\n');
+
+      // 更新步骤指示
+      var s1 = document.getElementById('st1');
+      var s2 = document.getElementById('st2');
+      var s3 = document.getElementById('st3');
+      if (s2) s2.classList.add('done');
+      if (s3) s3.classList.add('done');
+
+      // 滚动到结果
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch(e) {
+      alert('计算错误: ' + e.message);
+    }
+  };
+
+  // ====== 复制 ======
+  window.copyResult = function() {
+    var el = document.getElementById('result');
+    if (!el) return;
+    var text = el.innerText || el.textContent || '';
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function() { alert('已复制到剪贴板'); });
+      } else {
+        prompt('请手动复制：', text);
+      }
+    } catch(e) { prompt('请手动复制：', text); }
+  };
+
+  // ====== 导出 ======
+  window.exportReport = function() {
+    var el = document.getElementById('result');
+    if (!el) return;
+    var text = el.innerText || el.textContent || '';
+    var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = '干燥机选型报告_' + new Date().toISOString().slice(0, 10) + '.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  // ====== 页面就绪后自动计算 ======
+  // 不绑定 input 事件（避免扰动），只做一次性计算
+  // 用户修改参数后点击按钮再算
+
+  // 初始计算
+  try {
+    calculate();
+  } catch(e) {
+    document.getElementById('result').innerHTML = '⚠️ 初始化失败: ' + e.message;
+  }
+
+})();
 </script>
 </body>
 </html>
