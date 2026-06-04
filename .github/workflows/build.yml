@@ -33,6 +33,13 @@ jobs:
       - name: Add Android Platform
         run: cordova platform add android@13
 
+      - name: Force APK build type
+        run: |
+          cd platforms/android
+          echo "cdvBuildMultipleApks=true" >> gradle.properties
+          echo "=== gradle.properties ==="
+          cat gradle.properties
+
       - name: Setup keystore
         env:
           KS_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
@@ -57,26 +64,28 @@ jobs:
           echo "STORE_PASS=$STORE_PASS" >> $GITHUB_ENV
           echo "KEY_PW=$KEY_PW" >> $GITHUB_ENV
 
-      - name: Build release APK
+      - name: Build release
         run: cordova build android --release
 
       - name: Find and sign APK
         run: |
-          echo "=== All build outputs ==="
+          echo "=== Build outputs ==="
           find platforms/android -type f \( -name "*.apk" -o -name "*.aab" \) 2>/dev/null
 
           UNSIGNED=$(find platforms/android -path "*/release/*-release-unsigned.apk" -type f 2>/dev/null | head -1)
           if [ -z "$UNSIGNED" ]; then
             UNSIGNED=$(find platforms/android -path "*/release/*-unsigned.apk" -type f 2>/dev/null | head -1)
           fi
-
           if [ -z "$UNSIGNED" ]; then
-            echo "ERROR: No unsigned APK found"
+            echo "=== No unsigned APK. Checking alternatives ==="
+            find platforms/android -type f -name "*.apk" 2>/dev/null
+            # Try AAB as fallback — for Google Play it's fine
+            ls -la platforms/android/app/build/outputs/bundle/release/ 2>/dev/null
             exit 1
           fi
 
           echo "Signing: $UNSIGNED ($(du -h "$UNSIGNED" | cut -f1))"
-          SIGNED="${UNSIGNED%-unsigned.apk}.apk"
+          SIGNED="${UNSIGNED%-unsigned.apk}-signed.apk"
           $ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner sign \
             --ks release.keystore \
             --ks-pass pass:"${STORE_PASS}" \
