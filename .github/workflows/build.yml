@@ -33,13 +33,6 @@ jobs:
       - name: Add Android Platform
         run: cordova platform add android@13
 
-      - name: Force APK build type
-        run: |
-          cd platforms/android
-          echo "cdvBuildMultipleApks=true" >> gradle.properties
-          echo "=== gradle.properties ==="
-          cat gradle.properties
-
       - name: Setup keystore
         env:
           KS_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
@@ -64,39 +57,38 @@ jobs:
           echo "STORE_PASS=$STORE_PASS" >> $GITHUB_ENV
           echo "KEY_PW=$KEY_PW" >> $GITHUB_ENV
 
-      - name: Build release
+      - name: Build release AAB
         run: cordova build android --release
 
-      - name: Find and sign APK
+      - name: Convert AAB to APK (via bundletool)
         run: |
-          echo "=== Build outputs ==="
-          find platforms/android -type f \( -name "*.apk" -o -name "*.aab" \) 2>/dev/null
+          AAB="platforms/android/app/build/outputs/bundle/release/app-release.aab"
+          echo "AAB: $(du -h "$AAB" | cut -f1)"
 
-          UNSIGNED=$(find platforms/android -path "*/release/*-release-unsigned.apk" -type f 2>/dev/null | head -1)
-          if [ -z "$UNSIGNED" ]; then
-            UNSIGNED=$(find platforms/android -path "*/release/*-unsigned.apk" -type f 2>/dev/null | head -1)
-          fi
-          if [ -z "$UNSIGNED" ]; then
-            echo "=== No unsigned APK. Checking alternatives ==="
-            find platforms/android -type f -name "*.apk" 2>/dev/null
-            # Try AAB as fallback — for Google Play it's fine
-            ls -la platforms/android/app/build/outputs/bundle/release/ 2>/dev/null
-            exit 1
-          fi
+          # Download bundletool
+          wget -q https://github.com/google/bundletool/releases/download/1.17.2/bundletool-all-1.17.2.jar -O bundletool.jar
 
-          echo "Signing: $UNSIGNED ($(du -h "$UNSIGNED" | cut -f1))"
-          SIGNED="${UNSIGNED%-unsigned.apk}-signed.apk"
-          $ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner sign \
-            --ks release.keystore \
-            --ks-pass pass:"${STORE_PASS}" \
-            --key-pass pass:"${KEY_PW}" \
-            --out "$SIGNED" \
-            "$UNSIGNED"
+          # Build universal APK from AAB
+          java -jar bundletool.jar build-apks \
+            --bundle="$AAB" \
+            --output=app.apks \
+            --mode=universal \
+            --ks=release.keystore \
+            --ks-pass=pass:"${STORE_PASS}" \
+            --ks-key-alias=dryer-calc \
+            --key-pass=pass:"${KEY_PW}"
 
-          echo "=== Verify ==="
-          $ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner verify --verbose "$SIGNED"
-          ls -lh "$SIGNED"
-          echo "APK_PATH=$SIGNED" >> $GITHUB_ENV
+          # Extract universal APK
+          unzip -o app.apks universal.apk -d apk_out/
+          cp apk_out/universal.apk app-release.apk
+          ls -lh app-release.apk
+
+          echo "APK_PATH=$PWD/app-release.apk" >> $GITHUB_ENV
+
+      - name: Verify APK
+        run: |
+          $ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner verify --verbose "$APK_PATH"
+          echo "=== APK verified OK ==="
 
       - name: Upload signed APK
         uses: actions/upload-artifact@v4
